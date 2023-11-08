@@ -1,8 +1,8 @@
 @font-face {
     font-family: 'ACWW';
     font-style: normal;
-    /* font-weight: 400; */
-    src: url('./acww.ttf') format('ttf');
+    font-weight: normal;
+    src: url('./acww.ttf.woff') format('woff');
 }
 
 .ac-font {

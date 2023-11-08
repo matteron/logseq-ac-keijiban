@@ -77,23 +77,11 @@ const getPost = (ac, journalDay) => {
 
 const main = async () => {
   let ac = withSettings(logseq.settings);
-  console.info('ac-keijiban loaded');
 
   logseq.provideStyle({
     key: 'ac-keijiban',
     style: `
-@font-face {
-    font-family: 'ACWW';
-    font-style: normal;
-    /* font-weight: 400; */
-    src: url('https://raw.githubusercontent.com/matteron/logseq-ac-keijiban/main/assets/fonts/acww.ttf') format('ttf');
-}
-.ac-font {
-  font-family: "ACWW" !important;
-  // font-weight: ${settings.main_font_weight} !important;
-  // font-size: ${settings.main_font_size} !important;
-  // color: ${settings.main_color} !important;
-}
+@import url('https://github.com/matteron/logseq-ac-keijiban/raw/main/assets/fonts/acww.css');
 .post {
   display: flex;
   flex-direction: column;
@@ -113,7 +101,7 @@ const main = async () => {
     const post = getPost(ac, block.journalDay);
     const header = `<span class="header">${post.header}</span>`;
     const body = `<span>${post.msg}</span>`;
-    const template = `<div class="post">${header}<br/>${body}</div>`;
+    const template = `<div class="post ac-font">${header}<br/>${body}</div>`;
     logseq.provideUI({
       key,
       slot,
@@ -125,6 +113,8 @@ const main = async () => {
   logseq.onSettingsChanged((updated) => {
     ac = withSettings(updated);
   });
+
+  console.info('ac-keijiban loaded');
 };
 
 logseq.useSettingsSchema(settings).ready(main);
