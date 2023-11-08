@@ -1,0 +1,10 @@
+@font-face {
+    font-family: 'ACWW';
+    font-style: normal;
+    /* font-weight: 400; */
+    src: url('./acww.ttf') format('ttf');
+}
+
+.ac-font {
+    font-family: 'ACWW' !important;
+}
