@@ -17,14 +17,10 @@ The plugin will display a little confirmation message when it is inside a templa
 
 ### Settings
 
-#### Language
-Select the language to display in.  French not complete, see [AC-Keijiban#translation](https://github.com/helmasaur/ac-keijiban#translation)
-
-#### Font Size
-Sets the font size of the output.
-
-#### Start of the Week
-Let's you toggle between Monday and Sunday as the start of the week.  Determines when to pull from the "Message of the Week" set.
+- Language: Select the language to display in.  French not complete, see [AC-Keijiban#translation](https://github.com/helmasaur/ac-keijiban#translation)
+- Start of the Week: Let's you toggle between Monday and Sunday as the start of the week.  Determines when to pull from the "Message of the Week" set.
+- Font Size: Sets the font size of the output.
+- Use Font: Toggles whether to use the included font from the game.
 
 ### Todo
 - [ ] Setting for selecting which set of messages to use.
