@@ -7,7 +7,11 @@ import keijiban from './src/ac-keijiban.js';
  */
 const languages = ['en', 'fr'];
 const key = 'ac-keijiban';
+const defaultWeekStartIndex = 1;
+const weekStart = ['Sunday', 'Monday'];
+const typeName = ':' + key;
 
+/** @type {import("@logseq/libs/dist/LSPlugin.js").SettingSchemaDesc[]} */
 const settings = [
   {
     key: 'lang',
@@ -17,13 +21,29 @@ const settings = [
     default: languages[0],
     title: 'Language Selection',
     description:
-      'Select the language to display in.  French not complete.  See `https://github.com/helmasaur/ac-keijiban#translation`',
+      'Select the language to display in.  French not complete, see `https://github.com/helmasaur/ac-keijiban#translation`',
+  },
+  {
+    key: 'weekStart',
+    type: 'enum',
+    enumPicker: 'radio',
+    enumChoices: weekStart,
+    default: weekStart[defaultWeekStartIndex],
+    title: 'Start of the Week',
+    description:
+      'Determines which day to display the "Message of the Week" set of entries.',
   },
   {
     key: 'fontSize',
     type: 'number',
     default: 32,
     title: 'Font Size',
+  },
+  {
+    key: 'useFont',
+    type: 'boolean',
+    default: true,
+    title: 'Use Font',
   },
 ];
 
@@ -55,12 +75,12 @@ const dateFromJournalDay = (journalDay) => {
 /**
  * @param {Keijiban} ac
  * @param {number} journalDay
+ * @param {number} startOfWeek
  * @returns {Post}
  */
-const getPost = (ac, journalDay) => {
-  console.log(journalDay);
+const getPost = (ac, journalDay, startOfWeek) => {
   const date = dateFromJournalDay(journalDay);
-  if (date.getDay() === 1) {
+  if (date.getDay() === startOfWeek) {
     return {
       header: ac.messageOfTheWeek.header,
       msg: ac.messageOfTheWeek.all[journalDay % ac.messageOfTheWeek.count],
@@ -80,6 +100,14 @@ const getPost = (ac, journalDay) => {
   };
 };
 
+const determineWeekStart = (setting) => {
+  const startOfWeek = weekStart.findIndex((d) => d === setting);
+  if (startOfWeek === -1) {
+    return defaultWeekStartIndex;
+  }
+  return startOfWeek;
+};
+
 /**
  * @param {string} uuid
  * @returns {Promise<boolean>}
@@ -97,7 +125,7 @@ const inTemplate = async (uuid) => {
 
 const styles = (fontSize) =>
   logseq.provideStyle({
-    key: 'ac-keijiban-styling',
+    key: key + '-styling',
     style: `
 @import url('https://rawcdn.githack.com/matteron/logseq-ac-keijiban/4381b1dbd689a94ebacec9181624d84094ecc6f4/assets/fonts/acww.css');
 .post {
@@ -118,10 +146,16 @@ const styles = (fontSize) =>
 const main = async () => {
   let ac = keijiban(logseq.settings.lang);
   styles(logseq.settings.fontSize);
+  let startOfWeek = determineWeekStart(logseq.settings.weekStart);
+  let useFont = logseq.settings.useFont;
+
+  logseq.Editor.registerSlashCommand(key, async () => {
+    await logseq.Editor.insertAtEditingCursor(`{{renderer ${typeName}}} `);
+  });
 
   logseq.App.onMacroRendererSlotted(async ({ slot, payload }) => {
     const type = payload.arguments[0];
-    if (type !== ':ac-keijiban') {
+    if (type !== typeName) {
       return;
     }
     if (await inTemplate(payload.uuid)) {
@@ -144,10 +178,11 @@ const main = async () => {
       });
       return;
     }
-    const post = getPost(ac, journalDay);
+    const post = getPost(ac, journalDay, startOfWeek);
     const header = `<span class="header">${post.header}</span>`;
     const body = `<span>${post.msg}</span>`;
-    const template = `<div class="post ac-font">${header}<br class="break"/>${body}</div>`;
+    const fontClass = useFont ? ' ac-font' : '';
+    const template = `<div class="post${fontClass}">${header}<br class="break"/>${body}</div>`;
     logseq.provideUI({
       key: key + '_' + slot,
       slot,
@@ -159,9 +194,11 @@ const main = async () => {
   logseq.onSettingsChanged((updated) => {
     ac = keijiban(updated.lang);
     styles(updated.fontSize);
+    startOfWeek = determineWeekStart(updated.weekStart);
+    useFont = updated.useFont;
   });
 
-  console.info('ac-keijiban loaded');
+  console.info(key + ' loaded');
 };
 
 logseq.useSettingsSchema(settings).ready(main);
