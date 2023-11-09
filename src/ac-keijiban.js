@@ -11,41 +11,44 @@ export default (language) => {
   }
   language ??= 'en';
 
-  const messageOfTheWeekData = data[language].messageOfTheWeekData;
-  const poetryData = data[language].poetryData;
-  const talkingToMyselfData = data[language].talkingToMyselfData;
-
   // Modules
   return {
     messageOfTheWeek: {
-      all: messageOfTheWeekData,
-      count: messageOfTheWeekData.length,
+      all: data[language].messageOfTheWeekData,
+      count: data[language].messageOfTheWeekData.length,
       random: () => {
-        return randomMessage(messageOfTheWeekData);
+        return randomMessage(data[language].messageOfTheWeekData);
       },
+      header: data[language].messageOfTheWeekHeader,
     },
     poetry: {
-      all: poetryData,
-      count: poetryData.length,
+      all: data[language].poetryData,
+      count: data[language].poetryData.length,
       random: () => {
-        return randomMessage(poetryData);
+        return randomMessage(data[language].poetryData);
       },
+      header: data[language].poetryHeader,
     },
     talkingToMyself: {
-      all: talkingToMyselfData,
-      count: talkingToMyselfData.length,
+      all: data[language].talkingToMyselfData,
+      count: data[language].talkingToMyselfData.length,
       random: () => {
-        return randomMessage(talkingToMyselfData);
+        return randomMessage(data[language].talkingToMyselfData);
       },
+      header: data[language].talkingToMyselfHeader,
     },
-    all: messageOfTheWeekData.concat(poetryData.concat(talkingToMyselfData)),
+    all: data[language].messageOfTheWeekData.concat(
+      data[language].poetryData.concat(data[language].talkingToMyselfData),
+    ),
     count:
-      messageOfTheWeekData.length +
-      poetryData.length +
-      talkingToMyselfData.length,
+      data[language].messageOfTheWeekData.length +
+      data[language].poetryData.length +
+      data[language].talkingToMyselfData.length,
     random: () => {
       return randomMessage(
-        messageOfTheWeekData.concat(poetryData.concat(talkingToMyselfData)),
+        data[language].messageOfTheWeekData.concat(
+          data[language].poetryData.concat(data[language].talkingToMyselfData),
+        ),
       );
     },
   };

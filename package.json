@@ -7,5 +7,8 @@
   "logseq": {
     "icon": "./icon.png",
     "id": "logseq-ac-keijiban"
+  },
+  "devDependencies": {
+    "@logseq/libs": "^0.0.15"
   }
 }
