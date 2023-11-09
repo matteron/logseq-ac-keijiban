@@ -1,7 +1,7 @@
 # Logseq AC Keijiban
 A basic Logseq renderer that displays a bulletin board message from _Animal Crossing: Wild World_.
 
-Data is directly taken from [AC-Keijiban](https://github.com/helmasaur/ac-keijiban) by [helmasaur](https://github.com/helmasaur).  I just pulled it into this project and changed the code a bit to support ESM modules and the little header text you see.
+Data is directly taken from [AC-Keijiban](https://github.com/helmasaur/ac-keijiban) by [helmasaur](https://github.com/helmasaur).  I just pulled the source code into this project and modified it to support ESM modules and the little header text you see in the output.
 
 ![Preview picture of ac-keijiban functioning.](./img/preview.png)
 
