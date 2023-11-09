@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "author": "breadfruit_burial",
   "main": "./index.html",
-  "description": "Display a random quote from the bullitein board from Animal Crossing Wild World",
+  "description": "Display a random quote from the bullitein board in Animal Crossing Wild World",
   "logseq": {
     "icon": "./icon.png",
     "id": "logseq-ac-keijiban"
