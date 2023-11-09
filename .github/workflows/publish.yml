@@ -15,17 +15,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Use Node.js
-        uses: actions/setup-node@v1
-        with:
-          node-version: '16.x' # You might need to adjust this value to your own version
       - name: Build
         id: build
         run: |
-          npm i && npm run build
           mkdir ${{ env.PLUGIN_NAME }}
-          cp README.md package.json icon.png ${{ env.PLUGIN_NAME }}
-          mv dist ${{ env.PLUGIN_NAME }}
+          cp -r index.html index.js README.md package.json icon.png src ${{ env.PLUGIN_NAME }}
           zip -r ${{ env.PLUGIN_NAME }}.zip ${{ env.PLUGIN_NAME }}
           ls
           echo "::set-output name=tag_name::$(git tag --sort version:refname | tail -n 1)"
